@@ -1,16 +1,19 @@
+# Core FastAPI dependencies
 fastapi
-uvicorn
+uvicorn[standard]
 python-multipart
-pdfplumber
-PyPDF2
-PyMuPDF
-sentence-transformers
-transformers
-torch
-torchvision
-torchaudio
-faiss-cpu
-numpy
 pydantic
 python-jose[cryptography]
 passlib[bcrypt]
+
+# Lightweight alternatives
+PyPDF2
+pdfplumber
+
+# Only if you absolutely need ML (these are huge):
+sentence-transformers
+transformers
+torch --index-url https://download.pytorch.org/whl/cpu
+faiss-cpu
+
+numpy
