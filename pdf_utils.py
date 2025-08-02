@@ -1,10 +1,17 @@
 import PyPDF2
-import fitz  # PyMuPDF
 import pdfplumber
 import io
 import re
 from typing import Dict, List, Optional
 import logging
+
+# Import PyMuPDF (fitz) with error handling
+try:
+    import fitz  # PyMuPDF
+    PYMUPDF_AVAILABLE = True
+except ImportError:
+    PYMUPDF_AVAILABLE = False
+    logging.warning("PyMuPDF not available, using alternative PDF extraction methods")
 
 # Set up logging
 logging.basicConfig(level=logging.INFO)
@@ -16,6 +23,10 @@ class EnhancedPDFExtractor:
     @staticmethod
     def extract_with_pymupdf(file_path: str) -> Dict[str, str]:
         """Extract text using PyMuPDF (best for most PDFs)"""
+        if not PYMUPDF_AVAILABLE:
+            logger.warning("PyMuPDF not available, skipping this method")
+            return {}
+            
         text_pages = {}
         try:
             doc = fitz.open(file_path)
@@ -131,12 +142,15 @@ def extract_text_from_pdf(file_path: str) -> Dict[str, str]:
     """
     extractor = EnhancedPDFExtractor()
     
-    # Try extraction methods in order of preference
+    # Try extraction methods in order of preference (skip PyMuPDF if not available)
     extraction_methods = [
         ("pdfplumber", extractor.extract_with_pdfplumber),
-        ("PyMuPDF", extractor.extract_with_pymupdf),
         ("PyPDF2", extractor.extract_with_pypdf2)
     ]
+    
+    # Add PyMuPDF if available
+    if PYMUPDF_AVAILABLE:
+        extraction_methods.insert(1, ("PyMuPDF", extractor.extract_with_pymupdf))
     
     best_result = {}
     best_method = None
@@ -201,3 +215,4 @@ def validate_resume_content(text_dict: Dict[str, str]) -> bool:
     is_valid = found_keywords >= 3 or has_email
     
     logger.info(f"Resume validation: {found_keywords} keywords found, email: {has_email}, valid: {is_valid}")
+    return is_valid

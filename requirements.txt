@@ -1,19 +1,20 @@
-# Core FastAPI dependencies
 fastapi
 uvicorn[standard]
 python-multipart
 pydantic
 python-jose[cryptography]
 passlib[bcrypt]
+numpy
 
-# Lightweight alternatives
-PyPDF2
+# PDF processing
 pdfplumber
+PyPDF2
+PyMuPDF
 
-# Only if you absolutely need ML (these are huge):
+# CPU-only ML libraries (much smaller)
+torch --index-url https://download.pytorch.org/whl/cpu
+torchvision --index-url https://download.pytorch.org/whl/cpu
+torchaudio --index-url https://download.pytorch.org/whl/cpu
 sentence-transformers
 transformers
-torch --index-url https://download.pytorch.org/whl/cpu
 faiss-cpu
-
-numpy
