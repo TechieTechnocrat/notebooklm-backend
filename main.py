@@ -10,7 +10,7 @@ app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["https://techietechnocrat.github.io"],  # ✅ Your frontend domain
+    allow_origins=["https://techietechnocrat.github.io", "http://localhost:5173/notebooklm-frontend/"],  # ✅ Your frontend domain
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
