@@ -8,17 +8,19 @@ from pydantic import BaseModel
 
 app = FastAPI()
 
-
-class QuestionRequest(BaseModel):
-    question: str
-
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=["https://techietechnocrat.github.io"],  # ✅ Your frontend domain
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+
+class QuestionRequest(BaseModel):
+    question: str
+
+
 
 embedder = GrokEmbedder()
 current_pdf = {}  
